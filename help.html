@@ -1,2 +1,9 @@
 GET
     /mysql?version=DefaultsToLatest&user=DefaultsToDockerCore
+    
+To Install:
+
+    yum install -y ruby-devel rubygem-bundler git docker
+    systemctl start docker
+    bundle install
+    ruby server.rb
