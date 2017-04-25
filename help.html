@@ -3,7 +3,7 @@ GET
     
 To Install:
 
-    yum install -y ruby-devel rubygem-bundler git docker
+    yum install -y ruby-devel rubygem-bundler git docker gcc
     systemctl start docker
     bundle install
-    ruby server.rb
+    nohup ruby server.rb
