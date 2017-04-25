@@ -9,7 +9,7 @@
 require 'sinatra'
 require 'docker-api'
 set :environment, :production
-set :port, 8080
+set :port, 80
 set :dump_errors, false
 # concurrency lock
 #set :lock, true
