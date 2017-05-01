@@ -6,5 +6,5 @@ systemctl start docker && \
 git clone --depth=1 https://gitlab.com/spaz/docker-remote-saver.git && \
 cd docker-remote-saver/ && \    
 bundle install && \
-bundle exec rsepc && \
+bundle exec rspec && \
 nohup ruby server.rb &

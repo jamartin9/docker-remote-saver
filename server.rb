@@ -5,7 +5,6 @@
 # TODO: multiple files in single tar.gz
 #       Repo URL/Connection information
 #       UI
-#       Tests
 require 'sinatra'
 require 'docker-api'
 set :environment, :production
