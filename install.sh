@@ -1,5 +1,5 @@
 #!/bin/bash
-# clone server and install deps
+# clone server, install deps, run
 cd /opt && \
 yum install -y ruby-devel rubygem-bundler git docker gcc && \
 systemctl start docker && \
