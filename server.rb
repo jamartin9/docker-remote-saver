@@ -7,18 +7,28 @@
 #       UI
 require 'docker-api'
 require 'sinatra'
+require 'json'
 
+# config parsing
+def parse_port
+  file = File.read('config/config.json')
+  data_hash = JSON.parse(file)
+  '9001' if data_hash['port'].to_s.empty?
+end
+
+# config
 set :environment, :production
-set :port, 80
+set :port, parse_port
 set :dump_errors, false
+set :static, false
 # concurrency lock
 # set :lock, true
 # defaults to views
 # set :views, '/var/www/views/'
 # enabled by default when public directory exists
-set :static, false
 # set :public_folder, '/var/www'
 
+# creates downloable gziped docker tar
 def create_downloadable(image_name, tar_name, tar_gzip_name)
   # Save the image off to tar
   # names = %w( my_image1 my_image2:not_latest )
@@ -34,10 +44,12 @@ def create_downloadable(image_name, tar_name, tar_gzip_name)
   File.delete(tar_name)
 end
 
+# version config to endpoint
 def check_version(version)
   return 'latest' if version.to_s.empty?
 end
 
+# user config to endpoint
 def check_user(user)
   if user.to_s.empty?
     'docker.io'
@@ -46,6 +58,7 @@ def check_user(user)
   end
 end
 
+# docker image name creation
 def create_image_name(user, name, version)
   if 'docker.io' == user
     name + ':' + version
@@ -55,6 +68,11 @@ def create_image_name(user, name, version)
   end
 end
 
+# singular rest endpoint
+# returns help without required path
+# returns error on not found/disk full
+# returns download of docker image as tar.gz on success
+# optional params: version and user
 get '/?:name?/?' do
   # validate name or return help page
   name = params['name']
