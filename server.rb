@@ -11,9 +11,7 @@ require 'json'
 
 # config parsing
 def parse_port
-  file = File.read('config/config.json')
-  data_hash = JSON.parse(file)
-  '9001' if data_hash['port'].to_s.empty?
+  '9001' if ENV['PORT'].to_s.empty?
 end
 
 # config

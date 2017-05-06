@@ -1,8 +1,0 @@
-#!/bin/sh
-#
-ln -sf {{pkg.path}}/Gemfile {{pkg.svc_var_path}}
-ln -sf {{pkg.path}}/Gemfile.lock {{pkg.svc_var_path}}
-ln -sf {{pkg.path}}/error.html {{pkg.svc_var_path}}
-ln -sf {{pkg.path}}/help.html {{pkg.svc_var_path}}
-ln -sf {{pkg.path}}/server.rb {{pkg.svc_var_path}}
-ln -sf {{pkg.path}}/vendor {{pkg.svc_var_path}}

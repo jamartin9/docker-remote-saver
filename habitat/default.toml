@@ -1,4 +1,0 @@
-# Default values that can be updated.
-
-# The port number that is listening for requests.
-listening_port = 80
