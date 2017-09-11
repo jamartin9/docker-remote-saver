@@ -1,0 +1,62 @@
+
+buildscript {
+  repositories { jcenter() }
+
+  dependencies {
+    classpath 'com.github.jruby-gradle:jruby-gradle-plugin:1.5.0'
+    classpath 'com.github.jruby-gradle:jruby-gradle-jar-plugin:1.3.3'
+    //classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
+  }
+}
+
+apply plugin: "com.github.jruby-gradle.jar"
+//apply plugin: "com.github.jruby-gradle.base"
+//apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+
+import com.github.jrubygradle.JRubyExec
+
+repositories { jcenter() }
+
+
+dependencies {
+  jrubyJar 'org.jruby:jruby-complete:9.1.12.0'
+  jrubyJar 'org.jruby.mains:jruby-mains:0.5.0'
+  jrubyJar 'rubygems:sinatra:2.0.0'
+  jrubyJar 'rubygems:docker-api:1.33.6'
+  jrubyExec 'rubygems:sinatra:2.0.0'
+  jrubyExec 'rubygems:docker-api:1.33.6'
+  jrubyExec 'rubygems:rack-test:0.7.0'
+  jrubyExec 'rubygems:rspec:3.6.0'
+  jrubyExec 'rubygems:rubocop:0.49.1'
+}
+
+jrubyJar {
+    // tell the plugin to pack a runnable jar
+    initScript "${projectDir}/server.rb"
+    include "*.html"
+}
+
+task verifyRubocopWorks(type: JRubyExec) {
+  description "Verify that we can execute the `rubocop` command line tool"
+  script "rubocop"
+  scriptArgs "${projectDir}/server.rb"
+}
+
+task verifyRspecWorks(type: JRubyExec) {
+  dependsOn verifyRubocopWorks
+  description "Verify that we can execute the `rspec` command line tool"
+  script "rspec"
+  scriptArgs "${projectDir}/spec/"
+}
+
+/*
+ * This task is only here for the execution fo the gradleTest
+ */
+task runGradleTest(type: Exec) {
+    dependsOn jrubyJar, verifyRspecWorks
+    description "Execute the constructed self-executing jar"
+    environment [:]
+    workingDir "${buildDir}/libs"
+    commandLine 'java', '-jar', jrubyJar.outputs.files.singleFile.absolutePath
+}

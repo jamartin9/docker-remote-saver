@@ -58,7 +58,7 @@ end
 
 # docker image name creation
 def create_image_name(user, name, version)
-  if 'docker.io' == user
+  if user == 'docker.io'
     name + ':' + version
   else
     # set to user supplied image name
